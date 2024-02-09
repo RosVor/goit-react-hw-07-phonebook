@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from '../redux/contactsSlice';
-import { getContacts } from 'components/redux/selectors';
+import { getContacts } from '../redux/selectors';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contact = useSelector(getContacts);
+  const contacts = useSelector(getContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const existingContact = contact.find(
+    const existingContact = contacts.find(
       (contact) => contact.name.toLowerCase() === name.toLowerCase() || contact.number === number
     );
 

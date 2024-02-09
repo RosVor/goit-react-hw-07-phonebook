@@ -1,45 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'https://65c3fcba57a483fcb143375d.mockapi.io/';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
   async () => {
-    const response = await fetch('https://65c3fcba57a483fcb143375d.mockapi.io/contacts');
-    if (!response.ok) {
-      throw new Error('Failed to fetch contacts');
-    }
-    return response.json();
+    const response = await axios.get('/contacts');
+    return response.data;
   }
 );
 
 export const addContact = createAsyncThunk(
   'contacts/addContact',
-  async (contactData) => {
-    const response = await fetch('https://65c3fcba57a483fcb143375d.mockapi.io/contacts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(contactData),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to add contact');
-    }
-    return response.json();
+  async (newContact) => {
+    const response = await axios.post('/contacts', newContact);
+    return response.data;
   }
 );
 
 export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId) => {
-    const response = await fetch(`https://65c3fcba57a483fcb143375d.mockapi.io/contacts/${contactId}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      throw new Error('Failed to delete contact');
-    }
+    await axios.delete(`/contacts/${contactId}`);
     return contactId;
   }
 );
+
 
 const contactsSlice = createSlice({
   name: 'contacts',
