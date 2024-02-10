@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://65c3fcba57a483fcb143375d.mockapi.io/';
+axios.defaults.baseURL = 'https://65c3fcba57a483fcb143375d.mockapi.io/contacts';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
@@ -31,7 +31,11 @@ export const deleteContact = createAsyncThunk(
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: { items: [], isLoading: false, error: null, filter: '' },
-  reducers: {},
+  reducers: {
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.pending, (state) => {
@@ -73,6 +77,6 @@ const contactsSlice = createSlice({
   },
 });
 
-export const { setFilter } = contactsSlice.actions;
+export const {setFilter} = contactsSlice.actions;
 
 export default contactsSlice.reducer;
